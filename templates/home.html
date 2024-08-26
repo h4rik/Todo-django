@@ -27,9 +27,12 @@
             <!--the above template tag is a python code used to load current date dynamically-->
             <div class="col-md-7 col-lg-7" style="height: 450px; overflow: scroll;">
                 <!-- List of all the tasks for the day -->
+                 {% for i in tasks_ %}
+                <!--The "tasks_" we declared here is the one which we declared in the views, home function inside context function-->
                 <div class="card m-1">
                     <div class="card-body">
-                        This is some Task
+                        {{ i.task}} 
+                        <!--The task is the field name which we used in models.py --> 
                         <span style="position: relative; float: right;">
                             <a class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
                             <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
@@ -37,7 +40,7 @@
                         </span>
                     </div>
                 </div>
-               
+                {% endfor %}
             </div>
             <div class="col-md-5 col-lg-5">
                 <h5>Completed Tasks</h5>
@@ -52,11 +55,19 @@
         <div class="row">
             <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
                 <!-- To Do Form -->
-                <form action="" >
+                <form action="{% url 'addTask' %}" method="POST" >
+                    <!--The form action means when submit the form it goes to addTask funciton which is inside views.py of todo(to check you can inspect the page and you will see action="/todo/addTask/" which is correct ),
+                     and so we provided the url as well so that it can go that path and as we are storing the data in the database we use POST method 
+                    and if we want to just send the data via url then we use GET request0-->
+                    {% csrf_token %}
+                    <!--so when ever you create a form with post method, should add CSRF token (Cross site request Forgery) django generates csrf token from the server side to keep your form secured
+                    CSRF is meant provide un intensional data modifications , cross site forgery  attack means tricks to enter the card details or important details into a 
+                    form that is loading from a malicious websites but it looks as same website so that money gets stolen 
+                    so it is important to load or add csrf token  and you can also see csrf token when you inspect ex: <input type="hidden" name="csrfmiddlewaretoken" value="EAxLPVBtLEikPWs02bw8nmXWXjLkP41ssPOIOa4">-->
                     <div class="form-group">
                         <span style="display: flex;">
-                            <input type="text" class="form-control" placeholder="Add a task">
-                            <button class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
+                            <input type="text" name = "task" class="form-control" placeholder="Add a task">
+                            <button type="submit" class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
                         </span>
                     </div>
                 </form>
@@ -65,3 +76,6 @@
     </div>
 </body>
 </html>
+
+
+<!---->

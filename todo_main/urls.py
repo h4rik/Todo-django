@@ -15,10 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home')
-]
+    path('', views.home, name='home'), 
+    
+    # when we click +Add it should be appered in incompleted tasks and it should be added in database so 
+    # the request will always come into this urls.py (todo_main) and then it passes to the urls.py of todo app
+    path('todo/', include('todo.urls')),
+] 
